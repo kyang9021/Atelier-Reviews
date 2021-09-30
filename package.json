@@ -1,0 +1,22 @@
+{
+  "name": "project-atelier-reviews",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Fleeting-Falcons/Project-Atelier-Reviews.git"
+  },
+  "author": "Kevin Yang, Jacques Dubois",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Fleeting-Falcons/Project-Atelier-Reviews/issues"
+  },
+  "homepage": "https://github.com/Fleeting-Falcons/Project-Atelier-Reviews#readme",
+  "dependencies": {
+    "mongoose": "^6.0.8"
+  }
+}
