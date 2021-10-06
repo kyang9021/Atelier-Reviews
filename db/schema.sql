@@ -49,3 +49,7 @@ CREATE TABLE reviews_characteristics (
 ALTER TABLE photos ADD CONSTRAINT photos_review_id_fkey FOREIGN KEY (review_id) REFERENCES reviews (id);
 ALTER TABLE reviews_characteristics ADD CONSTRAINT reviews_characteristics_characteristic_id_fkey FOREIGN KEY (characteristic_id) REFERENCES characteristics(id);
 ALTER TABLE reviews_characteristics ADD CONSTRAINT reviews_characteristics_characteristic_id_fkey FOREIGN KEY (review_id) REFERENCES reviews(id);
+
+CREATE INDEX product_id ON reviews(product_id);
+
+CREATE INDEX review_id ON photos(review_id);

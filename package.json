@@ -4,7 +4,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "nodemon server/index.js"
   },
   "repository": {
     "type": "git",
@@ -17,6 +18,12 @@
   },
   "homepage": "https://github.com/Fleeting-Falcons/Project-Atelier-Reviews#readme",
   "dependencies": {
-    "mongoose": "^6.0.8"
+    "axios": "^0.22.0",
+    "dotenv": "^10.0.0",
+    "express": "^4.17.1",
+    "k6": "^0.0.0",
+    "mongoose": "^6.0.8",
+    "nodemon": "^2.0.13",
+    "pg": "^8.7.1"
   }
 }

@@ -2,8 +2,8 @@
 
 -- STEP #1: In command line, type psql catwalkreviews
 
--- STEP #2: create 'data' directory in SDC directory; move csv data files into 'data'
--- product.csv, features.csv, related.csv, styles.csv, skus.csv, photos.csv
+-- STEP #2: create 'data' directory in SDC directory; move csv data files into 'reviews.csv'
+-- 'reviews_photos.csv 'chacteristics.csv' characteristic_reviews.csv'
 
 -- Step #3: run SQL script below to load data into db
 
