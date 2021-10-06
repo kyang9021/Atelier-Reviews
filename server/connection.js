@@ -6,114 +6,50 @@ module.exports = {
     const page = req.query.page || req.params.page || 1;
     const count = req.query.count || req.params.count || 5;
     const sort = req.query.sort || req.params.sort || 'relevant'
-    
-    let str;
+
+    let orderBy;
     if (sort === 'newest') {
-      str = `
-      SELECT JSON_BUILD_OBJECT (
-        'product', ${productId},
-        'page', ${page},
-        'count', ${count},
-        'results', (SELECT JSON_AGG(
-          JSON_BUILD_OBJECT(
-            'review_id', reviews.id,
-            'rating', reviews.rating,
-            'summary', reviews.summary,
-            'recommend', reviews.recommend,
-            'response', reviews.response,
-            'body', reviews.body,
-            'date', TO_TIMESTAMP(CAST(reviews.date/1000 AS BIGINT)),
-            'reviewer_name', reviews.reviewer_name,
-            'helpfulness', reviews.helpfulness,
-            'photos', (
-              SELECT JSON_AGG(
-                JSON_BUILD_OBJECT(
-                  'id', photos.id,
-                  'url', photos.url
-                )
-              )
-              FROM photos
-              WHERE photos.review_id = reviews.id
-            )
-          ) ORDER BY reviews.date DESC
-        )
-        FROM reviews
-        WHERE reviews.product_id = $1 AND reviews.reported = false
-        )
-      )
-      reviews;
-    `
+      orderBy = 'reviews.date DESC';
     } else if (sort === 'helpful') {
-      str = `
-      SELECT JSON_BUILD_OBJECT (
-        'product', ${productId},
-        'page', ${page},
-        'count', ${count},
-        'results', (SELECT JSON_AGG(
-          JSON_BUILD_OBJECT(
-            'review_id', reviews.id,
-            'rating', reviews.rating,
-            'summary', reviews.summary,
-            'recommend', reviews.recommend,
-            'response', reviews.response,
-            'body', reviews.body,
-            'date', TO_TIMESTAMP(CAST(reviews.date/1000 AS BIGINT)),
-            'reviewer_name', reviews.reviewer_name,
-            'helpfulness', reviews.helpfulness,
-            'photos', (
-              SELECT JSON_AGG(
-                JSON_BUILD_OBJECT(
-                  'id', photos.id,
-                  'url', photos.url
-                )
-              )
-              FROM photos
-              WHERE photos.review_id = reviews.id
-            )
-          ) ORDER BY reviews.helpfulness DESC
-        )
-        FROM reviews
-        WHERE reviews.product_id = $1 AND reviews.reported = false
-        )
-      )
-      reviews;
-    `
+      orderBy = 'reviews.helpfulness DESC';
     } else {
-      str = `
-      SELECT JSON_BUILD_OBJECT (
-        'product', ${productId},
-        'page', ${page},
-        'count', ${count},
-        'results', (SELECT JSON_AGG(
-          JSON_BUILD_OBJECT(
-            'review_id', reviews.id,
-            'rating', reviews.rating,
-            'summary', reviews.summary,
-            'recommend', reviews.recommend,
-            'response', reviews.response,
-            'body', reviews.body,
-            'date', TO_TIMESTAMP(CAST(reviews.date/1000 AS BIGINT)),
-            'reviewer_name', reviews.reviewer_name,
-            'helpfulness', reviews.helpfulness,
-            'photos', (
-              SELECT JSON_AGG(
-                JSON_BUILD_OBJECT(
-                  'id', photos.id,
-                  'url', photos.url
-                )
-              )
-              FROM photos
-              WHERE photos.review_id = reviews.id
-            )
-          ) ORDER BY reviews.helpfulness DESC, reviews.date DESC
-        )
-        FROM reviews
-        WHERE reviews.product_id = $1 AND reviews.reported = false
-        )
-      )
-      reviews;
-    `
+      orderBy = 'reviews.helpfulness DESC, reviews.date DESC';
     }
+
+    const str = `
+    SELECT JSON_BUILD_OBJECT (
+      'product', ${productId},
+      'page', ${page},
+      'count', ${count},
+      'results', (SELECT JSON_AGG(
+        JSON_BUILD_OBJECT(
+          'review_id', reviews.id,
+          'rating', reviews.rating,
+          'summary', reviews.summary,
+          'recommend', reviews.recommend,
+          'response', reviews.response,
+          'body', reviews.body,
+          'date', TO_TIMESTAMP(CAST(reviews.date/1000 AS BIGINT)),
+          'reviewer_name', reviews.reviewer_name,
+          'helpfulness', reviews.helpfulness,
+          'photos', (
+            SELECT JSON_AGG(
+              JSON_BUILD_OBJECT(
+                'id', photos.id,
+                'url', photos.url
+              )
+            )
+            FROM photos
+            WHERE photos.review_id = reviews.id
+          )
+        ) ORDER BY ${orderBy}
+      )
+      FROM reviews
+      WHERE reviews.product_id = $1 AND reviews.reported = false
+      )
+    )
+    reviews;
+  `;
 
     db.query(str, [productId])
       .then(info => {
