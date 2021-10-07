@@ -50,6 +50,14 @@ ALTER TABLE photos ADD CONSTRAINT photos_review_id_fkey FOREIGN KEY (review_id) 
 ALTER TABLE reviews_characteristics ADD CONSTRAINT reviews_characteristics_characteristic_id_fkey FOREIGN KEY (characteristic_id) REFERENCES characteristics(id);
 ALTER TABLE reviews_characteristics ADD CONSTRAINT reviews_characteristics_characteristic_id_fkey FOREIGN KEY (review_id) REFERENCES reviews(id);
 
-CREATE INDEX product_id ON reviews(product_id);
+CREATE INDEX ON reviews(product_id);
 
-CREATE INDEX review_id ON photos(review_id);
+CREATE INDEX ON photos(review_id);
+
+SELECT setval('reviews_id_seq', COALESCE((SELECT MAX(id)+1 FROM reviews), 1), false);
+
+SELECT setval('photos_id_seq', COALESCE((SELECT MAX(id)+1 FROM photos), 1), false);
+
+SELECT setval('characteristics_id_seq', COALESCE((SELECT MAX(id)+1 FROM characteristics), 1), false);
+
+SELECT setval('reviews_characteristics_id_seq', COALESCE((SELECT MAX(id)+1 FROM reviews_characteristics), 1), false);

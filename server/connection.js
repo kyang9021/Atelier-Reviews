@@ -125,7 +125,7 @@ module.exports = {
 					c.product_id = $1
 				GROUP BY
 					c.id) AS inner_characteristics) characteristicsObject
-    `
+    `;
     db.query(str, [productId])
       .then(info => {
         res.send(info.rows[0]);
@@ -136,16 +136,66 @@ module.exports = {
       });
   },
 
-  addReview: () => {
+  addReview: (req, res) => {
+    let photosArr = [];
+    for (let i = 0; i < req.body.photos.length; i++) {
+      photosArr.push(`((SELECT id FROM ins1), '${req.body.photos[i]}')`);
+    }
+    const photos = photosArr.join(', ');
 
+    let characteristicKeys = Object.keys(req.body.characteristics);
+    let rcArray = [];
+    for (let j = 0; j < characteristicKeys.length; j++) {
+      rcArray.push((`((SELECT id FROM ins1), ${characteristicKeys[j]}, ${req.body.characteristics[characteristicKeys[j]]})`));
+    }
+    const rc = rcArray.join(', ');
+
+    const str = `
+    WITH ins1 AS (
+      INSERT INTO reviews(product_id, rating, date, summary, body, recommend, reviewer_name, reviewer_email)
+      VALUES ($1, $2, EXTRACT(EPOCH FROM CURRENT_TIMESTAMP(3)) * 1000, $3, $4, $5, $6, $7)
+      RETURNING id
+      )
+      , ins2 AS (
+      INSERT INTO reviews_characteristics(review_id, characteristic_id, value)
+      VALUES
+        ${rc}
+      )
+      INSERT INTO photos(review_id, url)
+      VALUES
+        ${photos};
+    `;
+    db.query(str, [req.body.product_id, req.body.rating, req.body.summary, req.body.body, req.body.recommend, req.body.name, req.body.email])
+      .then(() => {
+        res.sendStatus(201);
+      })
+      .catch(err => {
+        res.send(err);
+      });
   },
 
-  helpfulReview: () => {
-
+  helpfulReview: (req, res) => {
+    const reviewId = req.params.review_id;
+    const str = `UPDATE reviews SET helpfulness=helpfulness+1 WHERE id=$1`
+    db.query(str, [reviewId])
+      .then (() => {
+        res.sendStatus(204)
+      })
+      .catch ((err) => {
+        res.send(err);
+      })
   },
 
-  reportReview: () => {
-
+  reportReview: (req, res) => {
+    const reviewId = req.params.review_id;
+    const str = `UPDATE reviews SET reported=true WHERE id=$1`
+    db.query(str, [reviewId])
+      .then (() => {
+        res.sendStatus(204)
+      })
+      .catch ((err) => {
+        res.send(err);
+      })
   }
 }
 
