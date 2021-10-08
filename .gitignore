@@ -10,3 +10,5 @@
 
 # CSV Data
 /data
+
+.config.js
