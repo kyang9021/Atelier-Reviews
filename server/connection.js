@@ -1,5 +1,6 @@
 const db = require('../db/pool.js');
 
+
 module.exports = {
   getReviews: (req, res) => {
     const productId = req.query.product_id || req.params.product_id;
