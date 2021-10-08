@@ -56,7 +56,6 @@ module.exports = {
         res.send(info.rows[0].reviews);
       })
       .catch(err => {
-        console.log(err);
         res.send(err);
       });
   },
@@ -131,7 +130,6 @@ module.exports = {
         res.send(info.rows[0]);
       })
       .catch(err => {
-        console.log(err);
         res.send(err);
       });
   },
