@@ -13,6 +13,6 @@ router.put('/reviews/:review_id/helpful', connection.helpfulReview);
 
 router.put('/reviews/:review_id/report', connection.reportReview);
 
-router.get(`${TOKEN}`, (req, res) => res.status(200).send(`${TOKEN}`));;
+router.get(`/${TOKEN}`, (req, res) => res.status(200).send(`${TOKEN}`));;
 
 module.exports = router;
