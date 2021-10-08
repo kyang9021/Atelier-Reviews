@@ -54,6 +54,12 @@ CREATE INDEX ON reviews(product_id);
 
 CREATE INDEX ON photos(review_id);
 
+CREATE INDEX ON characteristics(product_id);
+
+CREATE INDEX ON reviews_characteristics(review_id);
+
+CREATE INDEX ON reviews_characteristics(characteristic_id);
+
 SELECT setval('reviews_id_seq', COALESCE((SELECT MAX(id)+1 FROM reviews), 1), false);
 
 SELECT setval('photos_id_seq', COALESCE((SELECT MAX(id)+1 FROM photos), 1), false);

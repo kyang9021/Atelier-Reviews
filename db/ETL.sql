@@ -7,20 +7,19 @@
 
 -- Step #3: run SQL script below to load data into db
 
-
 COPY reviews
-FROM '/Users/kevin-yang/work/Project-Atelier-Reviews/data/reviews.csv'
+FROM '/home/ubuntu/reviews.csv'
 WITH (FORMAT CSV, HEADER true, NULL 'null');
 
 COPY photos
-FROM '/Users/kevin-yang/work/Project-Atelier-Reviews/data/reviews_photos.csv'
+FROM '/home/ubuntu/reviews_photos.csv'
 WITH (FORMAT CSV, HEADER true, NULL 'null');
 
 COPY characteristics
-FROM '/Users/kevin-yang/work/Project-Atelier-Reviews/data/characteristics.csv'
+FROM '/home/ubuntu/characteristics.csv'
 WITH (FORMAT CSV, HEADER true, NULL 'null');
 
 COPY reviews_characteristics
-FROM '/Users/kevin-yang/work/Project-Atelier-Reviews/data/characteristic_reviews.csv'
+FROM '/home/ubuntu/characteristic_reviews.csv'
 WITH (FORMAT CSV, HEADER true, NULL 'null');
 

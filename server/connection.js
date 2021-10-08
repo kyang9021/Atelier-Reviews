@@ -141,8 +141,8 @@ module.exports = {
     for (let i = 0; i < req.body.photos.length; i++) {
       photosArr.push(`((SELECT id FROM ins1), '${req.body.photos[i]}')`);
     }
+    ['hi', 'bye', 'url3']
     const photos = photosArr.join(', ');
-
     let characteristicKeys = Object.keys(req.body.characteristics);
     let rcArray = [];
     for (let j = 0; j < characteristicKeys.length; j++) {
