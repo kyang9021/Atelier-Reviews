@@ -56,7 +56,7 @@ module.exports = {
         res.send(info.rows[0].reviews);
       })
       .catch(err => {
-        res.send(err);
+        res.status(404).send(err);
       });
   },
 
@@ -130,7 +130,7 @@ module.exports = {
         res.send(info.rows[0]);
       })
       .catch(err => {
-        res.send(err);
+        res.status(404).send(err);
       });
   },
 
@@ -168,7 +168,7 @@ module.exports = {
         res.sendStatus(201);
       })
       .catch(err => {
-        res.send(err);
+        res.status(404).send(err);
       });
   },
 
@@ -180,7 +180,7 @@ module.exports = {
         res.sendStatus(204)
       })
       .catch ((err) => {
-        res.send(err);
+        res.status(404).send(err);
       })
   },
 
@@ -192,7 +192,7 @@ module.exports = {
         res.sendStatus(204)
       })
       .catch ((err) => {
-        res.send(err);
+        res.status(404).send(err);
       })
   }
 }
